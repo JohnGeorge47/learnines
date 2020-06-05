@@ -25,9 +25,7 @@ type Game struct {
 	Global_Sales *string `json:"global_sales"`
 }
 
-
-const mapping =
-`{
+const mapping = `{
    "mappings":{
       "game":{
          "properties":{
@@ -106,21 +104,25 @@ func main() {
 				Other_Sales:  &record[9],
 				Global_Sales: &record[10],
 			}
+			err:=InsertToEs(ctx,data,client)
+			if err!=nil{
+				fmt.Println(err)
+			}
 			fmt.Println(&data.Name)
 		}
 	}
 }
 
-
-func InsertToEs(ctx context.Context,gameinfo *Game,esclient *elastic.Client)error{
-	datajson,err:=json.Marshal(gameinfo)
-	if err!=nil{
+func InsertToEs(ctx context.Context, gameinfo Game, esclient *elastic.Client) error {
+	datajson, err := json.Marshal(gameinfo)
+	if err != nil {
 		return err
 	}
-	data:=string(datajson)
-	idx,err:=esclient.Index().Index("gameinfo").BodyJson(data).Do(ctx)
-	if err!=nil{
+	data := string(datajson)
+	idx, err := esclient.Index().Index("gameinfo").BodyJson(data).Do(ctx)
+	if err != nil {
 		return err
 	}
-
+	fmt.Println("inserted succefully", idx)
+	return nil
 }
