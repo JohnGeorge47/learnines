@@ -25,31 +25,27 @@ type Game struct {
 	Global_Sales *string `json:"global_sales"`
 }
 
+
 const mapping = `{
-   "mappings":{
-      "game":{
-         "properties":{
-            "rank":{
-               "type":"integer"
-            },
-            "name":{
-               "type":"string"
-            },
-            "genre":{
-               "type":"string"
-            },
-            "publisher":{
-               "type":"string"
-            },
-			"platform":{
-				"type":"string"
-			}
-         }
-      }
-   },
 	"settings":{
 		"number_of_shards":1,
-		"number_of_replicas":0	
+		"number_of_replicas":2
+	},
+	"mappings":{
+		"properties":{
+			"rank":{
+				"type":"keyword"
+			},
+			"name":{
+				"type":"text"
+			},
+			"genre":{
+				"type":"keyword"
+			},
+			"publisher":{
+				"type":"keyword"
+			}
+		}
 	}
 }`
 

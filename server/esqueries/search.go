@@ -34,14 +34,16 @@ func (s Search) PingEs(conn string, ctx context.Context) (*string, error) {
 }
 
 func (s Search) Search(tosearch string, start int, end int, ctx context.Context) error {
-	query := elastic.NewWildcardQuery("name", "*"+tosearch)
+	query := elastic.NewWildcardQuery("name",tosearch+"*")
+	fmt.Println(query)
 	search, err := s.esClient.Search().
-		Query(query).
 		Index("gameinfo").
+		Query(query).
 		Sort("name", true).From(start).Size(5).Pretty(true).Do(ctx)
 	if err != nil {
 		return err
 	}
-	fmt.Println("Query took %d milliseconds", search.TookInMillis)
+	fmt.Println("Query took milliseconds", search.TookInMillis)
+	fmt.Println(search.TotalHits())
 	return nil
 }

@@ -17,7 +17,7 @@ func main() {
 	}
 	fmt.Println(*str)
 	http.HandleFunc("/", testFunc)
-	http.HandleFunc("/name", queryFunc)
+	http.HandleFunc("/details", queryFunc)
 	fmt.Println("server running on port 9090")
 	err = http.ListenAndServe(":9090", nil)
 	if err != nil {
@@ -31,5 +31,11 @@ func testFunc(w http.ResponseWriter, r *http.Request) {
 
 func queryFunc(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("name")
+	es := esqueries.EsManager
 	fmt.Println(query)
+	ctx := context.Background()
+	err := es.Search(query, 0, 5, ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
