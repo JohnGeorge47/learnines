@@ -2,11 +2,16 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/JohnGeorge47/learnines/server/esqueries"
 	"log"
 	"net/http"
 )
+
+type searchResult struct {
+	Data []esqueries.Game `json:"data"`
+}
 
 func main() {
 	cl := esqueries.EsManager
@@ -34,8 +39,16 @@ func queryFunc(w http.ResponseWriter, r *http.Request) {
 	es := esqueries.EsManager
 	fmt.Println(query)
 	ctx := context.Background()
-	err := es.Search(query, 0, 5, ctx)
+	res, err := es.Search(query, 0, 5, ctx)
 	if err != nil {
 		fmt.Println(err)
 	}
+	resJson := *res
+	fmt.Println(resJson)
+	finalJson := searchResult{Data: resJson}
+	tosend, err := json.Marshal(finalJson)
+	if err != nil {
+		fmt.Println(err)
+	}
+	w.Write(tosend)
 }

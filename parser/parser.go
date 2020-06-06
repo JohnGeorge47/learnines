@@ -25,7 +25,6 @@ type Game struct {
 	Global_Sales *string `json:"global_sales"`
 }
 
-
 const mapping = `{
 	"settings":{
 		"number_of_shards":1,
