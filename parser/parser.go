@@ -104,8 +104,8 @@ func main() {
 				Other_Sales:  &record[9],
 				Global_Sales: &record[10],
 			}
-			err:=InsertToEs(ctx,data,client)
-			if err!=nil{
+			err := InsertToEs(ctx, data, client)
+			if err != nil {
 				fmt.Println(err)
 			}
 			fmt.Println(&data.Name)
